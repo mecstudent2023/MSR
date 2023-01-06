@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mec.msr.dbclasses.MyDatabaseHelper;
-import com.mec.msr.dbclasses.MyRequest;
+import com.mec.msr.myclasses.MyDatabaseHelper;
+import com.mec.msr.myclasses.MyRequest;
 
 import java.util.ArrayList;
 
@@ -65,9 +65,6 @@ public class UpdateEquipmentActivity extends AppCompatActivity {
                 checkEntries();
             }
         });
-
-        changeEquipmentImage();
-
 
         spinnerEquipmentType.setSelection(_EquipmentTypes.indexOf(_MyRequestObject.getEquipmentType()));
         editTextEquipmentReserveTime.setText(_MyRequestObject.getReserveTime());

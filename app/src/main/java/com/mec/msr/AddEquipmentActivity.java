@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mec.msr.dbclasses.MyDatabaseHelper;
-import com.mec.msr.dbclasses.MyRequest;
+import com.mec.msr.myclasses.MyDatabaseHelper;
+import com.mec.msr.myclasses.MyRequest;
 
 import java.util.ArrayList;
 

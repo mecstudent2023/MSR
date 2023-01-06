@@ -1,4 +1,4 @@
-package com.mec.msr.dbclasses;
+package com.mec.msr.myclasses;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class MyRequestsAdapter extends RecyclerView.Adapter<MyRequestsAdapter.MyViewHolder> {
 
     private ArrayList<MyRequest> _MyRequestsArrayList;
+    private OnRequestClickedListener _OnRequestClickedListener;
+    private OnRequestDeleteListener _OnRequestDeleteListener;
 
     public MyRequestsAdapter() {
         _MyRequestsArrayList = new ArrayList<>();
@@ -66,11 +68,33 @@ public class MyRequestsAdapter extends RecyclerView.Adapter<MyRequestsAdapter.My
                 break;
         }
 
-
         holder.textViewEquipmentType.setText(r.getEquipmentType());
         holder.textViewReserveTime.setText(r.getReserveTime());
         holder.textViewRequestedBy.setText(r.getRequestedBy());
 
+        holder.imageButtonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _OnRequestDeleteListener.OnDeleteClicked(r.getId());
+            }
+        });
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _OnRequestClickedListener.onRequestClicked(r);
+            }
+        });
+
+    }
+
+    public void setOnItemClickListener(OnRequestClickedListener listener){
+        _OnRequestClickedListener = listener;
+    }
+
+    public void setOnItemDeleteClickListener(OnRequestDeleteListener listener){
+        _OnRequestDeleteListener = listener;
     }
 
     @Override

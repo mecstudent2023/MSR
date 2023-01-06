@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mec.msr.dbclasses.MyDatabaseHelper;
-import com.mec.msr.dbclasses.MyRequest;
-import com.mec.msr.dbclasses.MyRequestsAdapter;
+import com.mec.msr.myclasses.MyDatabaseHelper;
+import com.mec.msr.myclasses.MyRequest;
+import com.mec.msr.myclasses.MyRequestsAdapter;
+import com.mec.msr.myclasses.OnRequestClickedListener;
+import com.mec.msr.myclasses.OnRequestDeleteListener;
 
 import java.util.ArrayList;
 
@@ -37,10 +39,22 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewRequests.setAdapter(_Adapter);
 
         //set on itemClickListener
-//        _Adapter.setOnOrderClickedListener(this::openActivityUpdateOrder);
+        _Adapter.setOnItemClickListener(new OnRequestClickedListener() {
+            @Override
+            public void onRequestClicked(MyRequest myRequestObject) {
+                Intent intent = new Intent(MainActivity.this, UpdateEquipmentActivity.class);
+                intent.putExtra("my_request", myRequestObject);
+                startActivity(intent);
+            }
+        });
 
         //set on itemDeleteClickListener
-//        _Adapter.setOnOrderDeleteClickedListener(this::showDeleteDialog);
+        _Adapter.setOnItemDeleteClickListener(new OnRequestDeleteListener() {
+            @Override
+            public void OnDeleteClicked(int MyRequestObjectId) {
+                dbHelper.deleteRequest(MyRequestObjectId);
+            }
+        });
 
         // Set layout manager to position the items
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

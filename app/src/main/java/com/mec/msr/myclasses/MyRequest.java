@@ -1,6 +1,8 @@
-package com.mec.msr.dbclasses;
+package com.mec.msr.myclasses;
 
-public class MyRequest {
+import java.io.Serializable;
+
+public class MyRequest implements Serializable {
     private int id;
     private String equipmentType;
     private String reserveTime;

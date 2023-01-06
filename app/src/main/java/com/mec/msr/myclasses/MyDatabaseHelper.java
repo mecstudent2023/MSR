@@ -1,4 +1,4 @@
-package com.mec.msr.dbclasses;
+package com.mec.msr.myclasses;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
