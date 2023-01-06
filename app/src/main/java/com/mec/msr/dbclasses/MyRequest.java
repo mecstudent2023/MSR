@@ -9,6 +9,12 @@ public class MyRequest {
     public MyRequest() {
     }
 
+    public MyRequest( String equipmentType, String reserveTime, String requestedBy) {
+        this.id = id;
+        this.equipmentType = equipmentType;
+        this.reserveTime = reserveTime;
+        this.requestedBy = requestedBy;
+    }
     public MyRequest(int id, String equipmentType, String reserveTime, String requestedBy) {
         this.id = id;
         this.equipmentType = equipmentType;
