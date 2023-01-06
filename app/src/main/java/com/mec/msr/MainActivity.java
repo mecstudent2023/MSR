@@ -1,7 +1,10 @@
 package com.mec.msr;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("userId", "onCreate: " + getUserId());
 
         MyDBHelperRequests dbHelper = new MyDBHelperRequests(this);
 
@@ -78,5 +83,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private int getUserId() {
+        SharedPreferences sharedPref = getSharedPreferences("msr_pref", Context.MODE_PRIVATE);
+        int defaultValue = 1;
+        int userId = sharedPref.getInt("user_id", defaultValue);
+        return userId;
     }
 }

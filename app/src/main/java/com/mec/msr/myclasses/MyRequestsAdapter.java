@@ -68,7 +68,7 @@ public class MyRequestsAdapter extends RecyclerView.Adapter<MyRequestsAdapter.My
                 break;
         }
 
-        holder.textViewEquipmentType.setText(r.getEquipmentType());
+        holder.textViewEquipmentType.setText(r.getUserid() + "/" + r.getEquipmentType());
         holder.textViewReserveTime.setText(r.getReserveTime());
         holder.textViewRequestedBy.setText(r.getRequestedBy());
 

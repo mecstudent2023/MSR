@@ -59,6 +59,7 @@ public class MyDBHelperRequests extends SQLiteOpenHelper {
     public void addRequest(MyRequest newRequest) {
         ContentValues cv = new ContentValues();
 
+        cv.put(COLUMN_USER_ID, newRequest.getUserid());
         cv.put(COLUMN_EQUIPMENT_TYPE, newRequest.getEquipmentType());
         cv.put(COLUMN_RESERVE_TIME, newRequest.getReserveTime());
         cv.put(COLUMN_REQUEST_BY, newRequest.getRequestedBy());
@@ -89,7 +90,7 @@ public class MyDBHelperRequests extends SQLiteOpenHelper {
                 @SuppressLint("Range")
                 int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
                 @SuppressLint("Range")
-                int uid = cursor.getInt(cursor.getColumnIndex(MyDBHelperUser.COLUMN_ID));
+                int uid = cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID));
                 @SuppressLint("Range")
                 String equipmentType = cursor.getString(cursor.getColumnIndex(COLUMN_EQUIPMENT_TYPE));
                 @SuppressLint("Range")
@@ -113,6 +114,7 @@ public class MyDBHelperRequests extends SQLiteOpenHelper {
     public void updateRequest(MyRequest myRequest) {
         ContentValues cv = new ContentValues();
 
+        cv.put(COLUMN_USER_ID, myRequest.getUserid());
         cv.put(COLUMN_EQUIPMENT_TYPE, myRequest.getEquipmentType());
         cv.put(COLUMN_RESERVE_TIME, myRequest.getReserveTime());
         cv.put(COLUMN_REQUEST_BY, myRequest.getRequestedBy());
@@ -129,7 +131,7 @@ public class MyDBHelperRequests extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, COLUMN_ID + " = " + requestId, null);
     }
 
-    private int getUserId(Context context){
+    private int getUserId(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences("msr_pref", Context.MODE_PRIVATE);
         int defaultValue = 1;
         int userId = sharedPref.getInt("user_id", defaultValue);

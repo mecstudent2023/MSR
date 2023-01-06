@@ -3,6 +3,7 @@ package com.mec.msr;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,8 @@ public class AddEquipmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_equipment);
+
+        Log.d("userId", "onCreate: " + getUserId());
 
         imageViewEquipment = findViewById(R.id.imageViewEquipment);
         spinnerEquipmentType = findViewById(R.id.spinnerEquipmentType);

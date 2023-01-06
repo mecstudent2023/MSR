@@ -3,6 +3,7 @@ package com.mec.msr;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,6 +37,8 @@ public class UpdateEquipmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_equipment);
+
+        Log.d("userId", "onCreate: " + getUserId());
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
