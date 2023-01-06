@@ -3,6 +3,7 @@ package com.mec.msr.myclasses;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,36 +12,45 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class MyDatabaseHelper extends SQLiteOpenHelper {
+public class MyDBHelperRequests extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "msr_db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 4;
 
     private static final String TABLE_NAME = "equipments_requests";
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USER_ID = "uid";
     private static final String COLUMN_EQUIPMENT_TYPE = "equipment_type";
     private static final String COLUMN_RESERVE_TIME = "reserve_time";
     private static final String COLUMN_REQUEST_BY = "requested_by";
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        onCreate(db);
+    }
 
-    public MyDatabaseHelper(@Nullable Context context) {
+    public MyDBHelperRequests(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(sqLiteDatabase);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        String query = "CREATE TABLE " + TABLE_NAME + " ("
+        String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + COLUMN_ID + " INTEGER PRIMARY KEY,"
+                + COLUMN_USER_ID + " INTEGER,"
                 + COLUMN_EQUIPMENT_TYPE + " TEXT, "
                 + COLUMN_RESERVE_TIME + " TEXT, "
-                + COLUMN_REQUEST_BY + " TEXT)";
+                + COLUMN_REQUEST_BY + " TEXT,"
+                + " FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES "
+                + MyDBHelperUser.TABLE_NAME + "(" + MyDBHelperUser.COLUMN_ID + "))";
 
         //execSQL will execute our query !
         sqLiteDatabase.execSQL(query);
@@ -61,9 +71,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // read data from sqLite db and return them as arrayList
-    public ArrayList<MyRequest> getMyRequestsArrayList() {
+    public ArrayList<MyRequest> getMyRequestsArrayList(Context context) {
 
-        ArrayList<MyRequest> products = new ArrayList<>();
+        ArrayList<MyRequest> requests = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
 
         //getReadableDatabase allow you to read from sqLite
@@ -79,20 +89,24 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range")
                 int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
                 @SuppressLint("Range")
+                int uid = cursor.getInt(cursor.getColumnIndex(MyDBHelperUser.COLUMN_ID));
+                @SuppressLint("Range")
                 String equipmentType = cursor.getString(cursor.getColumnIndex(COLUMN_EQUIPMENT_TYPE));
                 @SuppressLint("Range")
                 String reserveTime = cursor.getString(cursor.getColumnIndex(COLUMN_RESERVE_TIME));
                 @SuppressLint("Range")
                 String requestedBy = cursor.getString(cursor.getColumnIndex(COLUMN_REQUEST_BY));
 
-                MyRequest myRequest = new MyRequest(id, equipmentType, reserveTime, requestedBy);
-                products.add(myRequest);
+                if (uid == getUserId(context)) {
+                    MyRequest myRequest = new MyRequest(id, uid, equipmentType, reserveTime, requestedBy);
+                    requests.add(myRequest);
+                }
 
             } while (cursor.moveToNext());// check if there is rows available
 
         }
 
-        return products;
+        return requests;
     }
 
 
@@ -115,5 +129,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, COLUMN_ID + " = " + requestId, null);
     }
 
-
+    private int getUserId(Context context){
+        SharedPreferences sharedPref = context.getSharedPreferences("msr_pref", Context.MODE_PRIVATE);
+        int defaultValue = 1;
+        int userId = sharedPref.getInt("user_id", defaultValue);
+        return userId;
+    }
 }

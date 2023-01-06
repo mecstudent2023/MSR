@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class MyRequest implements Serializable {
     private int id;
+    private int userid;
     private String equipmentType;
     private String reserveTime;
     private String requestedBy;
@@ -11,14 +12,15 @@ public class MyRequest implements Serializable {
     public MyRequest() {
     }
 
-    public MyRequest( String equipmentType, String reserveTime, String requestedBy) {
-        this.id = id;
+    public MyRequest(int userid, String equipmentType, String reserveTime, String requestedBy) {
+        this.userid = userid;
         this.equipmentType = equipmentType;
         this.reserveTime = reserveTime;
         this.requestedBy = requestedBy;
     }
-    public MyRequest(int id, String equipmentType, String reserveTime, String requestedBy) {
+    public MyRequest(int id, int userid, String equipmentType, String reserveTime, String requestedBy) {
         this.id = id;
+        this.userid = userid;
         this.equipmentType = equipmentType;
         this.reserveTime = reserveTime;
         this.requestedBy = requestedBy;
@@ -30,6 +32,14 @@ public class MyRequest implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public String getEquipmentType() {
