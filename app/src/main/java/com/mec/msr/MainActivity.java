@@ -1,6 +1,7 @@
 package com.mec.msr;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MyRequestsAdapter _Adapter;
     private ArrayList<MyRequest> _MyRequestsArrayList;
+    MyDBHelperRequests _DBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("userId", "onCreate: " + getUserId());
 
-        MyDBHelperRequests dbHelper = new MyDBHelperRequests(this);
+
+        _DBHelper = new MyDBHelperRequests(this);
 
         _Adapter = new MyRequestsAdapter();
-        _MyRequestsArrayList = dbHelper.getMyRequestsArrayList(MainActivity.this);
+        _MyRequestsArrayList = _DBHelper.getMyRequestsArrayList(MainActivity.this);
 
         RecyclerView recyclerViewRequests = findViewById(R.id.recyclerViewRequests);
         _Adapter.setNewData(_MyRequestsArrayList);
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         _Adapter.setOnItemDeleteClickListener(new OnRequestDeleteListener() {
             @Override
             public void OnDeleteClicked(int MyRequestObjectId) {
-                dbHelper.deleteRequest(MyRequestObjectId);
+                displayDialog(MyRequestObjectId);
             }
         });
 
@@ -79,10 +83,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 _Adapter.refresh();
-                _Adapter.setNewData(dbHelper.getMyRequestsArrayList(MainActivity.this));
+                _Adapter.setNewData(_DBHelper.getMyRequestsArrayList(MainActivity.this));
             }
 
         });
+    }
+
+
+    private void displayDialog(int MyRequestObjectId) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setTitle("Alert")
+                .setIcon(R.drawable.ic_launcher_foreground)
+                .setMessage("Are sure you that you want to delete this item")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        dialoginterface.cancel();
+                    }
+                })
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        _DBHelper.deleteRequest(MyRequestObjectId);
+                    }
+                }).show();
     }
 
     private int getUserId() {
