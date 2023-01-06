@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mec.msr.dbclasses.MyDatabaseHelper;
+import com.mec.msr.dbclasses.MyRequest;
+
 import java.util.ArrayList;
 
 public class AddEquipmentActivity extends AppCompatActivity {
@@ -23,7 +26,6 @@ public class AddEquipmentActivity extends AppCompatActivity {
 
     ArrayList<String> _EquipmentTypes;
     String _SelectedEquipmentType;
-
 
 
     @Override
@@ -63,20 +65,20 @@ public class AddEquipmentActivity extends AppCompatActivity {
         String reserveTime = editTextEquipmentReserveTime.getText().toString();
         String requestedBy = editTextRequestBy.getText().toString();
 
-        if(reserveTime.isEmpty()){
+        if (reserveTime.length() <= 0) {
             Toast.makeText(this, "Please fill Reserve Time", Toast.LENGTH_SHORT).show();
-        }
-        else if(requestedBy.isEmpty()){
+        } else if (requestedBy.length() <= 0) {
             Toast.makeText(this, "Please fill Requested by", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            addRequestToMySqlite(reserveTime,requestedBy);
+        } else {
+            addRequestToMySqlite(reserveTime, requestedBy);
         }
 
     }
 
     private void addRequestToMySqlite(String reserveTime, String requestedBy) {
-
+        MyDatabaseHelper dbHelper = new MyDatabaseHelper(AddEquipmentActivity.this);
+        dbHelper.addRequest(new MyRequest(_SelectedEquipmentType, reserveTime, requestedBy));
+        finish();
     }
 
 
@@ -85,6 +87,7 @@ public class AddEquipmentActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 _SelectedEquipmentType = _EquipmentTypes.get(i);
+                changeEquipmentImage();
             }
 
             @Override
@@ -94,5 +97,30 @@ public class AddEquipmentActivity extends AppCompatActivity {
         };
 
         return listener;
+    }
+
+
+
+    private void changeEquipmentImage() {
+        switch (_SelectedEquipmentType) {
+            case "Big Forklift":
+                imageViewEquipment.setImageResource(R.drawable.fl_big);
+                break;
+            case "Container Forklift":
+                imageViewEquipment.setImageResource(R.drawable.fl_containers);
+                break;
+            case "Teal-handler Forklift":
+                imageViewEquipment.setImageResource(R.drawable.fl_talehandler);
+                break;
+            case "Medium Forklift":
+                imageViewEquipment.setImageResource(R.drawable.fl_medium);
+                break;
+            case "Small Forklift":
+                imageViewEquipment.setImageResource(R.drawable.fl_small);
+                break;
+            case "Stacker Forklift":
+                imageViewEquipment.setImageResource(R.drawable.fl_stacker);
+                break;
+        }
     }
 }
