@@ -1,5 +1,7 @@
 package com.mec.msr;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mec.msr.myclasses.MyDatabaseHelper;
+import com.mec.msr.myclasses.MyDBHelperRequests;
 import com.mec.msr.myclasses.MyRequest;
 
 import java.util.ArrayList;
@@ -76,11 +78,10 @@ public class AddEquipmentActivity extends AppCompatActivity {
     }
 
     private void addRequestToMySqlite(String reserveTime, String requestedBy) {
-        MyDatabaseHelper dbHelper = new MyDatabaseHelper(AddEquipmentActivity.this);
-        dbHelper.addRequest(new MyRequest(_SelectedEquipmentType, reserveTime, requestedBy));
+        MyDBHelperRequests dbHelper = new MyDBHelperRequests(AddEquipmentActivity.this);
+        dbHelper.addRequest(new MyRequest(getUserId(), _SelectedEquipmentType, reserveTime, requestedBy));
         finish();
     }
-
 
     private AdapterView.OnItemSelectedListener onItemSelected() {
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
@@ -100,6 +101,12 @@ public class AddEquipmentActivity extends AppCompatActivity {
     }
 
 
+    private int getUserId() {
+        SharedPreferences sharedPref = getSharedPreferences("msr_pref", Context.MODE_PRIVATE);
+        int defaultValue = 1;
+        int userId = sharedPref.getInt("user_id", defaultValue);
+        return userId;
+    }
 
     private void changeEquipmentImage() {
         switch (_SelectedEquipmentType) {

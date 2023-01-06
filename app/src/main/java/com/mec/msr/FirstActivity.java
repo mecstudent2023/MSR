@@ -14,7 +14,7 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
 
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(FirstActivity.this, MainActivity.class);
+            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }, 1000);

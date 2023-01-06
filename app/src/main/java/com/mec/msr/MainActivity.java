@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mec.msr.myclasses.MyDatabaseHelper;
+import com.mec.msr.myclasses.MyDBHelperRequests;
 import com.mec.msr.myclasses.MyRequest;
 import com.mec.msr.myclasses.MyRequestsAdapter;
 import com.mec.msr.myclasses.OnRequestClickedListener;
@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MyDatabaseHelper dbHelper = new MyDatabaseHelper(this);
+        MyDBHelperRequests dbHelper = new MyDBHelperRequests(this);
 
         _Adapter = new MyRequestsAdapter();
-        _MyRequestsArrayList = dbHelper.getMyRequestsArrayList();
+        _MyRequestsArrayList = dbHelper.getMyRequestsArrayList(MainActivity.this);
 
         RecyclerView recyclerViewRequests = findViewById(R.id.recyclerViewRequests);
         _Adapter.setNewData(_MyRequestsArrayList);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 _Adapter.refresh();
-                _Adapter.setNewData(dbHelper.getMyRequestsArrayList());
+                _Adapter.setNewData(dbHelper.getMyRequestsArrayList(MainActivity.this));
             }
 
         });
