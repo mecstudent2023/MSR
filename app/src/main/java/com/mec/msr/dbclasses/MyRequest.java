@@ -1,17 +1,17 @@
-package com.mec.msr;
+package com.mec.msr.dbclasses;
 
-public class MyRequests {
+public class MyRequest {
     private int id;
-    private String forkliftType;
+    private String equipmentType;
     private String reserveTime;
     private String requestedBy;
 
-    public MyRequests() {
+    public MyRequest() {
     }
 
-    public MyRequests(int id, String forkliftType, String reserveTime, String requestedBy) {
+    public MyRequest(int id, String equipmentType, String reserveTime, String requestedBy) {
         this.id = id;
-        this.forkliftType = forkliftType;
+        this.equipmentType = equipmentType;
         this.reserveTime = reserveTime;
         this.requestedBy = requestedBy;
     }
@@ -24,12 +24,12 @@ public class MyRequests {
         this.id = id;
     }
 
-    public String getForkliftType() {
-        return forkliftType;
+    public String getEquipmentType() {
+        return equipmentType;
     }
 
-    public void setForkliftType(String forkliftType) {
-        this.forkliftType = forkliftType;
+    public void setEquipmentType(String equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
     public String getReserveTime() {
